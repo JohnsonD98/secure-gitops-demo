@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: secure-gitops-demo
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: 'https://github.com/JohnsonD98/secure-gitops-demo.git'
+    targetRevision: main
+    path: k8s
+
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: secure-gitops
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
